@@ -1,5 +1,5 @@
 # 🐛 Bug Fix Multi-Agent Pipeline
-### Purple Merit Technologies — Assessment 2
+
 
 An automated multi-agent system that ingests a bug report and logs, reproduces the issue, and outputs a root-cause hypothesis, patch plan, and optional patch — orchestrated using **LangGraph** and **OpenAI GPT-4o-mini**.
 

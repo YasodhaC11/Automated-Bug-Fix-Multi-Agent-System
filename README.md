@@ -38,8 +38,8 @@ purplemerit-bugfix-agent/
 
 | File | Description |
 |---|---|
-| `data/bug_report.md` | Bug title, description, expected vs actual behavior, reproduction hints |
-| `data/app.log` | Stack trace + noise lines (INFO, DEBUG, WARNING) to test log robustness |
+| `sample_inputs/bug_report.md` | Bug title, description, expected vs actual behavior, reproduction hints |
+| `sample_inputs/app.log` | Stack trace + noise lines (INFO, DEBUG, WARNING) to test log robustness |
 
 The bug is a `ZeroDivisionError` in a `divide()` function with no zero-check — a classic missing guard condition.
 

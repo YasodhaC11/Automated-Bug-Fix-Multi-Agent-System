@@ -8,7 +8,7 @@ An automated multi-agent system that ingests a bug report and logs, reproduces t
 ## 📁 Project Structure
 
 ```
-purplemerit-bugfix-agent/
+automated-bugfix-agent/
 ├── sample_inputs/
 │   ├── bug_report.md          # Input: bug report (Markdown)
 │   └── app.log                # Input: application logs with noise
@@ -127,7 +127,7 @@ The graph uses a **conditional edge** after the Critic Agent:
 ### 1. Clone the repo
 ```bash
 git clone <repo-url>
-cd purplemerit-bugfix-agent
+cd automated-bugfix-agent
 ```
 
 ### 2. Install dependencies

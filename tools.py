@@ -3,23 +3,23 @@ import tempfile
 import os
 import re
 
-# ── 1. extract_error_type ──────────────────────────────────────────────────
+# 1. extract_error_type
 def extract_error_type(logs: str) -> str:
     """
     Extract the actual error type from logs.
-    Returns the LAST match (real error, not noise).
+    Returns the match (real error, not noise).
     """
     error_type = "UnknownError"
     for line in logs.split("\n"):
         line = line.strip()
         if "Error" in line or "Exception" in line:
             candidate = line.split(":")[0].strip()
-            if " " not in candidate and candidate:  # valid class names have no spaces
+            if " " not in candidate and candidate:
                 error_type = candidate
     return error_type
 
 
-# ── 2. grep_search ─────────────────────────────────────────────────────────
+# 2. grep_search
 def grep_search(text: str, keyword: str) -> list:
     """
     Search for lines containing a keyword (case-insensitive).
@@ -32,7 +32,7 @@ def grep_search(text: str, keyword: str) -> list:
     return results
 
 
-# ── 3. execute_code ────────────────────────────────────────────────────────
+# 3. execute_code
 def execute_code(code: str) -> str:
     """
     Executes Python code safely via subprocess.
@@ -66,7 +66,7 @@ def execute_code(code: str) -> str:
             os.unlink(tmp_path)
 
 
-# ── 4. run_tests ───────────────────────────────────────────────────────────
+# 4. run_tests
 def run_tests(test_path: str = ".") -> str:
     """
     Runs pytest on the given path.
@@ -87,7 +87,7 @@ def run_tests(test_path: str = ".") -> str:
         return f"Error running tests: {str(e)}"
 
 
-# ── 5. extract_stack_trace ─────────────────────────────────────────────────
+# 5. extract_stack_trace
 def extract_stack_trace(logs: str) -> str:
     """
     Extracts full stack trace block from logs.
@@ -109,7 +109,7 @@ def extract_stack_trace(logs: str) -> str:
     return "\n".join(trace_lines).strip() if trace_lines else "No stack trace found"
 
 
-# ── 6. save_repro_file ─────────────────────────────────────────────────────
+# 6. save_repro_file
 def save_repro_file(code: str, path: str = "repro_script.py") -> str:
     """
     Saves reproduction code to a file.
@@ -150,9 +150,9 @@ def log_trace(agent: str, tool: str, inp: str, out: str):
     }
     with open("traces.log", "a", encoding="utf-8") as f:
         f.write(json.dumps(trace) + "\n")
-    print(f"  🔧 [{agent}] → {tool}")
+    print(f"   [{agent}] → {tool}")
 
-# ── Quick self-test ────────────────────────────────────────────────────────
+# Quick self-test
 if __name__ == "__main__":
     logs = """
 INFO 2024-01-10 10:00:01 Server started on port 8080

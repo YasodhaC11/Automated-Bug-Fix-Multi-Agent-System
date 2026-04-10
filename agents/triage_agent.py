@@ -23,14 +23,12 @@ Analyze the bug report and extract the following as JSON:
 
 Respond ONLY with valid JSON. No extra text.
 
-Bug Report:
-{state["bug_report"]}
+Bug Report:{state["bug_report"]}
 """
     try:
         response = llm.invoke(prompt)
-        print("RAW LLM RESPONSE:", response.content)  # keep during dev
+        #print("RAW LLM RESPONSE:", response.content)
         parsed = json.loads(clean_json_response(response.content))
-        #parsed = json.loads(response.content.strip())
 
         state["issue_summary"] = parsed.get("issue_summary", "N/A")
         state["error_type"]    = parsed.get("error_type", "UnknownError")

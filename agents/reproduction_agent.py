@@ -11,24 +11,23 @@ REPRO_FILE = "repro_script.py"
 def reproduction_agent(state: AgentState) -> AgentState:
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
-    # --- Step 1: Generate minimal repro script ---
+    # Step 1: Generate minimal repro script ---
     prompt = f"""
-You are a Python debugging assistant.
-
-Generate a minimal Python script that reproduces the bug described below.
-
-STRICT RULES:
-- Return ONLY valid Python code
-- Do NOT include ``` or markdown
-- Do NOT include the word 'python'
-- No explanations, no comments
-- The script must raise the exact error when run
-
-Issue  : {state["issue_summary"]}
-Error  : {state["error_type"]}
-Evidence from logs:
-{state.get("evidence", "No evidence available")}
-"""
+        You are a Python debugging assistant.
+        Generate a minimal Python script that reproduces the bug described below.
+        
+        STRICT RULES:
+        - Return ONLY valid Python code
+        - Do NOT include ``` or markdown
+        - Do NOT include the word 'python'
+        - No explanations, no comments
+        - The script must raise the exact error when run
+        
+        Issue  : {state["issue_summary"]}
+        Error  : {state["error_type"]}
+        Evidence from logs:
+        {state.get("evidence", "No evidence available")}
+        """
     try:
         response = llm.invoke(prompt)
         code = response.content.strip()
@@ -41,14 +40,14 @@ Evidence from logs:
         print("=== GENERATED REPRO CODE ===")
         print(code)
 
-        # --- Step 2: Save to file ---
+        # Step 2: Save to file
         with open(REPRO_FILE, "w") as f:
             f.write(code)
         print(f"\nRepro script saved to: {REPRO_FILE}")
         log_trace("reproduction_agent", "save_repro_file",
                   "repro_script.py",
                   "file saved")
-        # --- Step 3: Execute the script ---
+        # Step 3: Execute the script
         print("\n=== EXECUTING REPRO SCRIPT ===")
         repro_result = execute_code(code)
         state["repro_result"] = repro_result
@@ -56,10 +55,10 @@ Evidence from logs:
         log_trace("reproduction_agent", "execute_code",
                   str(state.get("reproduction_code") or "")[:100],  # ← safe
                   repro_result[:100])
-        # --- Step 4: Verify error matches log evidence ---
+        # Step 4: Verify error matches log evidence
         expected_error = state.get("error_type", "")
         if expected_error and expected_error in repro_result:
-            print(f"\n✅ Confirmed: '{expected_error}' reproduced successfully")
+            print(f"\n✅Confirmed: '{expected_error}' reproduced successfully")
             state["repro_result"] = f"CONFIRMED: {expected_error} reproduced.\n{repro_result}"
         elif repro_result == "NoError":
             print("\n⚠️ Warning: Script ran without error — repro may be incomplete")

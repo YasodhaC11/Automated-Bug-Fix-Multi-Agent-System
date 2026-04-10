@@ -9,32 +9,30 @@ from tools import clean_json_response,log_trace
 def fix_planner_agent(state: AgentState) -> AgentState:
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     prompt = f"""
-You are a senior Python debugging expert.
-
-Using all the evidence below, analyze the bug and return a JSON with:
-- "root_cause": clear explanation of why the bug occurs
-- "confidence": one of [high, medium, low]
-- "fix_plan": list of concrete steps to fix the issue
-- "patch": minimal corrected Python code that fixes the bug
-- "files_impacted": list of files/modules that need changes
-- "risks": potential risks or side effects of the fix
-- "verification": list of steps to verify the fix works
-- "open_questions": list of things still unknown or unclear
-
-Respond ONLY with valid JSON. No extra text.
-
-Issue Summary     : {state["issue_summary"]}
-Error Type        : {state["error_type"]}
-Reproduction Code : {state["reproduction_code"]}
-Repro Result      : {state.get("repro_result", "Not available")}
-Log Evidence      :
-{state.get("evidence", "No evidence available")}
-"""
+        You are a senior Python debugging expert.
+        
+        Using all the evidence below, analyze the bug and return a JSON with:
+        - "root_cause": clear explanation of why the bug occurs
+        - "confidence": one of [high, medium, low]
+        - "fix_plan": list of concrete steps to fix the issue
+        - "patch": minimal corrected Python code that fixes the bug
+        - "files_impacted": list of files/modules that need changes
+        - "risks": potential risks or side effects of the fix
+        - "verification": list of steps to verify the fix works
+        - "open_questions": list of things still unknown or unclear
+        
+        Respond ONLY with valid JSON. No extra text.
+        
+        Issue Summary     : {state["issue_summary"]}
+        Error Type        : {state["error_type"]}
+        Reproduction Code : {state["reproduction_code"]}
+        Repro Result      : {state.get("repro_result", "Not available")}
+        Log Evidence      : {state.get("evidence", "No evidence available")}
+        """
     try:
         response = llm.invoke(prompt)
-        print("RAW LLM RESPONSE:", response.content)
+        #print("RAW LLM RESPONSE:", response.content)
         parsed = json.loads(clean_json_response(response.content))
-        #parsed = json.loads(response.content.strip())
 
         state["root_cause"]     = f"{parsed.get('root_cause', 'N/A')} (Confidence: {parsed.get('confidence', 'unknown')})"
         state["fix_plan"]       = json.dumps(parsed.get("fix_plan", []), indent=2)

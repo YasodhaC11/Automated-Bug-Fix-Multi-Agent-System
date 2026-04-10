@@ -17,34 +17,30 @@ def log_analyst_agent(state: AgentState) -> AgentState:
         error_lines + exception_lines + traceback_lines + warning_lines
     ))
 
-    # ← NO log_trace here, evidence not set yet
 
     extracted_error_type = extract_error_type(logs)
     state["error_type"] = extracted_error_type
     state["evidence"] = "\n".join(all_evidence) if all_evidence else "No evidence found"
 
     prompt = f"""
-You are an expert log analyst for a software debugging pipeline.
-
-Analyze the logs below and return a JSON with:
-- "error_type": the specific error class (e.g. ZeroDivisionError)
-- "stack_trace": the relevant stack trace lines only
-- "anomalies": list of unusual or suspicious lines
-- "noise": list of lines that are irrelevant / red herrings
-- "frequency": how many times the error appears
-- "summary": 2-3 sentence explanation of what the logs reveal
-
-Respond ONLY with valid JSON. No extra text.
-
-Logs:
-{logs}
-
-Pre-extracted evidence:
-{state["evidence"]}
-"""
+        You are an expert log analyst for a software debugging pipeline.
+        
+        Analyze the logs below and return a JSON with:
+        - "error_type": the specific error class (e.g. ZeroDivisionError)
+        - "stack_trace": the relevant stack trace lines only
+        - "anomalies": list of unusual or suspicious lines
+        - "noise": list of lines that are irrelevant / red herrings
+        - "frequency": how many times the error appears
+        - "summary": 2-3 sentence explanation of what the logs reveal
+        
+        Respond ONLY with valid JSON. No extra text.
+        
+        Logs:{logs}
+        Pre-extracted evidence:{state["evidence"]}
+        """
     try:
         response = llm.invoke(prompt)
-        print("RAW LLM RESPONSE:", response.content)
+        #print("RAW LLM RESPONSE:", response.content)
         parsed = json.loads(clean_json_response(response.content))
 
         state["error_type"] = parsed.get("error_type", extracted_error_type)
@@ -56,7 +52,7 @@ Pre-extracted evidence:
             "summary"     : parsed.get("summary", "")
         }, indent=2)
 
-        # ✅ log_trace AFTER evidence is set
+        # log_trace AFTER evidence is set
         log_trace("log_analyst_agent", "grep_search",
                   "keyword: Error/Exception/Traceback",
                   str(state.get("evidence") or "")[:100])

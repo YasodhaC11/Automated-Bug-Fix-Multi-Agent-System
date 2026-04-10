@@ -10,7 +10,7 @@ llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 def critic_agent(state: AgentState) -> AgentState:
 
-    # --- Re-execute repro to independently verify ---
+    # Re-execute repro to independently verify
     print("=== CRITIC: RE-EXECUTING REPRO SCRIPT ===")
     actual_error = execute_code(state["reproduction_code"])
     print("Actual Execution Output:", actual_error)
@@ -49,22 +49,12 @@ def critic_agent(state: AgentState) -> AgentState:
 
     Reproduction Code:{state["reproduction_code"]}
     Repro Result:{state.get("repro_result", "N/A")}
-    Log Evidence:
-    {state.get("evidence", "N/A")}
-    
-    Root Cause:
-    {state["root_cause"]}
-    
-    Fix Plan:
-    {state["fix_plan"]}
-    
-    Patch:
-    {state.get("patch", "N/A")}
-    
-    Verification Plan:
-    {state.get("verification", "N/A")}
+    Log Evidence:{state.get("evidence", "N/A")}
+    Root Cause:{state["root_cause"]}
+    Fix Plan:{state["fix_plan"]}
+    Patch:{state.get("patch", "N/A")}
+    Verification Plan:{state.get("verification", "N/A")}
     """
-
     try:
         response = llm.invoke(prompt)
         raw = response.content.strip()

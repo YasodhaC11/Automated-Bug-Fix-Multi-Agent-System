@@ -1,6 +1,5 @@
 import json
 import os
-import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -13,7 +12,7 @@ from agents.reproduction_agent import reproduction_agent
 from agents.fix_planner_agent  import fix_planner_agent
 from agents.reviewer_agent     import critic_agent
 
-# ── Conditional routing ────────────────────────────────────────────────────
+# Conditional routing
 def should_retry(state: AgentState) -> str:
     try:
         critique = json.loads(state.get("critique", "{}"))
@@ -32,16 +31,15 @@ def should_retry(state: AgentState) -> str:
         print(f"should_retry error: {e}")
         return "done"
 
-# ── Wrapped agents with retry counter ─────────────────────────────────────
+# Wrapped agents with retry counter
 def fix_planner_with_retry(state: AgentState) -> AgentState:
     result = fix_planner_agent(state)
-    # Explicitly carry over AND increment retry_count
     current = state.get("retry_count") or 0
     result["retry_count"] = current + 1
     print(f"  [DEBUG] retry_count set to: {result['retry_count']}")
     return result
 
-# ── Build the graph ────────────────────────────────────────────────────────
+# Build the graph
 def build_graph():
     graph = StateGraph(AgentState)
 
@@ -57,7 +55,7 @@ def build_graph():
     graph.add_edge("reproduction", "fix_planner")
     graph.add_edge("fix_planner",  "critic")
 
-    # Conditional edge: retry or finish
+
     graph.add_conditional_edges(
         "critic",
         should_retry,
@@ -70,7 +68,7 @@ def build_graph():
     return graph.compile()
 
 
-# ── Save final JSON output ─────────────────────────────────────────────────
+# Save final JSON output
 def save_output(state: AgentState, path: str = "output.json"):
     output = {
         "bug_summary": {
@@ -108,11 +106,11 @@ def save_output(state: AgentState, path: str = "output.json"):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2)
 
-    print(f"\n✅ Final output saved to: {path}")
+    print(f"\n****Final output saved to: {path}")
     return output
 
 
-# ── Main ───────────────────────────────────────────────────────────────────
+# Main
 def main():
     # Clear previous traces
     with open("traces.log", "w", encoding="utf-8") as f:

@@ -26,6 +26,6 @@ class AgentState(TypedDict):
     verification:      Optional[str]
     open_questions:    Optional[str]
     retry_count:       Optional[int]
-
+    test_result:       Optional[str]
     # Critic Agent
     critique:          Optional[str]

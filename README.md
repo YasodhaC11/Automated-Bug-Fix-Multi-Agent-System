@@ -1,5 +1,5 @@
 # 🐛 Bug Fix Multi-Agent Pipeline
-
+### Purple Merit Technologies — Assessment 2
 
 An automated multi-agent system that ingests a bug report and logs, reproduces the issue, and outputs a root-cause hypothesis, patch plan, and optional patch — orchestrated using **LangGraph** and **OpenAI GPT-4o-mini**.
 
@@ -8,7 +8,7 @@ An automated multi-agent system that ingests a bug report and logs, reproduces t
 ## 📁 Project Structure
 
 ```
-automated-bugfix-agent/
+purplemerit-bugfix-agent/
 ├── sample_inputs/
 │   ├── bug_report.md          # Input: bug report (Markdown)
 │   └── app.log                # Input: application logs with noise
@@ -38,8 +38,8 @@ automated-bugfix-agent/
 
 | File | Description |
 |---|---|
-| `sample_inputs/bug_report.md` | Bug title, description, expected vs actual behavior, reproduction hints |
-| `sample_inputs/app.log` | Stack trace + noise lines (INFO, DEBUG, WARNING) to test log robustness |
+| `data/bug_report.md` | Bug title, description, expected vs actual behavior, reproduction hints |
+| `data/app.log` | Stack trace + noise lines (INFO, DEBUG, WARNING) to test log robustness |
 
 The bug is a `ZeroDivisionError` in a `divide()` function with no zero-check — a classic missing guard condition.
 
@@ -127,7 +127,7 @@ The graph uses a **conditional edge** after the Critic Agent:
 ### 1. Clone the repo
 ```bash
 git clone <repo-url>
-cd automated-bugfix-agent
+cd purplemerit-bugfix-agent
 ```
 
 ### 2. Install dependencies

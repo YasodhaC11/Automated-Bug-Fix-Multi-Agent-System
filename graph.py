@@ -97,7 +97,8 @@ def save_output(state: AgentState, path: str = "output.json"):
         },
         "validation_plan": {
             "verification"  : state.get("verification",   "N/A"),
-            "open_questions": state.get("open_questions", "N/A")
+            "open_questions": state.get("open_questions", "N/A"),
+            "test_result"   : state.get("test_result", "N/A")
         },
         "critique"    : state.get("critique", "N/A"),
         "retry_count" : state.get("retry_count", 0)

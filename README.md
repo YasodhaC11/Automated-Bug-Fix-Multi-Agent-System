@@ -1,9 +1,7 @@
 # 🐛 Bug Fix Multi-Agent Pipeline
-### Purple Merit Technologies — Assessment 2
 
 An automated multi-agent system that ingests a bug report and logs, reproduces the issue, and outputs a root-cause hypothesis, patch plan, and optional patch — orchestrated using **LangGraph** and **OpenAI GPT-4o-mini**.
 
----
 
 ## 📁 Project Structure
 
@@ -19,6 +17,8 @@ purplemerit-bugfix-agent/
 │   ├── reproduction_agent.py  # Generates & executes minimal repro script
 │   ├── fix_planner_agent.py   # Proposes root cause, patch, verification plan
 │   └── reviewer_agent.py      # Critic: challenges assumptions, suggests edge cases
+├── output/
+│   ├── test_fix.py            # Test cases
 ├── state.py                   # Shared AgentState (TypedDict)
 ├── tools.py                   # Tool functions used by agents
 ├── graph.py                   # LangGraph orchestrator (entry point)
@@ -38,8 +38,8 @@ purplemerit-bugfix-agent/
 
 | File | Description |
 |---|---|
-| `data/bug_report.md` | Bug title, description, expected vs actual behavior, reproduction hints |
-| `data/app.log` | Stack trace + noise lines (INFO, DEBUG, WARNING) to test log robustness |
+| `sample_inputs/bug_report.md` | Bug title, description, expected vs actual behavior, reproduction hints |
+| `sample_inputs/app.log` | Stack trace + noise lines (INFO, DEBUG, WARNING) to test log robustness |
 
 The bug is a `ZeroDivisionError` in a `divide()` function with no zero-check — a classic missing guard condition.
 
@@ -73,6 +73,7 @@ Proposes a complete fix using all prior evidence:
 - Step-by-step fix plan
 - Actual patch code
 - Files impacted, risks, verification steps, open questions
+- Run test cases
 
 ### 5. Critic / Reviewer Agent
 Independently re-executes the repro and challenges the fix:
@@ -127,7 +128,7 @@ The graph uses a **conditional edge** after the Critic Agent:
 ### 1. Clone the repo
 ```bash
 git clone <repo-url>
-cd purplemerit-bugfix-agent
+cd automated-bug-fix-multi-agent-system
 ```
 
 ### 2. Install dependencies

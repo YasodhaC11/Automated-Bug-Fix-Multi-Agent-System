@@ -1,0 +1,23 @@
+2024-02-10 09:00:01 INFO  Flask app started v2.1.0
+2024-02-10 09:00:02 INFO  GET /api/health 200 OK [2ms]
+2024-02-10 09:00:05 INFO  GET /api/weather 200 OK [320ms]
+2024-02-10 09:00:06 INFO  CPU usage: 8% normal
+2024-02-10 09:00:07 INFO  GET /api/weather 200 OK [290ms]
+2024-02-10 09:00:08 INFO  Scheduled job: cache_cleanup ran successfully
+2024-02-10 09:00:10 WARNING GET /api/weather response time degrading: 8000ms
+2024-02-10 09:00:11 INFO  Memory usage: 210MB normal
+2024-02-10 09:00:12 WARNING External API slow response detected
+2024-02-10 09:00:15 WARNING GET /api/weather response time degrading: 15000ms
+2024-02-10 09:00:18 INFO  Disk usage: 40% normal
+2024-02-10 09:00:40 ERROR requests.exceptions.ConnectionError: HTTPSConnectionPool
+           host='api.weatherservice.com' port=443: Read timed out.
+           File "api/weather.py", line 12, in get_weather
+           File "api/weather.py", line 25, in route_handler
+2024-02-10 09:00:40 ERROR GET /api/weather 500 Internal Server Error [30045ms]
+2024-02-10 09:00:40 ERROR GET /api/weather 500 Internal Server Error [30051ms]
+2024-02-10 09:00:41 INFO  GET /api/health 200 OK [3ms]
+2024-02-10 09:00:41 ERROR requests.exceptions.ConnectionError: HTTPSConnectionPool
+           host='api.weatherservice.com' port=443: Read timed out.
+           File "api/weather.py", line 12, in get_weather
+2024-02-10 09:00:42 INFO  Network latency to db: 1ms normal
+2024-02-10 09:00:42 CRITICAL Service degraded: /api/weather returning 100% errors

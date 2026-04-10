@@ -1,0 +1,10 @@
+INFO 2024-01-10 10:00:01 Server started on port 8080
+DEBUG 2024-01-10 10:00:05 Memory usage: 45MB
+INFO 2024-01-10 10:00:12 User request received: calculate(10, 0)
+WARNING 2024-01-10 10:00:12 Deprecated API endpoint called
+Traceback (most recent call last):
+  File "calculator.py", line 5, in <module>
+    result = divide(10, 0)
+  ...
+ZeroDivisionError: division by zero
+INFO 2024-01-10 10:00:13 Connection pool size: 10
